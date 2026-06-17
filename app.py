@@ -16,14 +16,22 @@ from ai_functions import (
 
 st.title("SmartSem AI")
 
+notes = ""
+
 text_input = st.text_area("OR paste your notes here", height=200)
+
+uploaded_file = st.file_uploader("Upload your notes (PDF)", type="pdf")
 
 if text_input:
     notes = text_input
 
-uploaded_file = st.file_uploader("Upload your notes (PDF)", type="pdf")
+if uploaded_file is not None:
+    reader = PdfReader(uploaded_file)
 
-notes = ""
+    for page in reader.pages:
+        text = page.extract_text()
+        if text:
+            notes += text
 
 if uploaded_file is not None:
     reader = PdfReader(uploaded_file)
@@ -35,10 +43,12 @@ if uploaded_file is not None:
 
 if st.button("Generate Summary"):
 
-    summary = summarize_notes(notes)
-
-    st.subheader("Summary")
-    st.write(summary)
+    if not notes.strip():
+        st.warning("Please enter or upload notes first.")
+    else:
+        summary = summarize_notes(notes)
+        st.subheader("Summary")
+        st.write(summary)
 
 if st.button("Simplify Notes"):
 

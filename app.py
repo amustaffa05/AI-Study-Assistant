@@ -49,7 +49,7 @@ if st.button("Simplify Notes"):
         st.subheader("Simplified Explanation")
         st.write(simplified)
 
-# AFTER notes are ready (after PDF + text input)
+# ----- after notes are ready (after PDF + text input) -----
 
 st.subheader("Ask a Question")
 user_question = st.text_input("Ask anything about your notes")

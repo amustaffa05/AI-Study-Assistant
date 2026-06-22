@@ -4,7 +4,8 @@ import json
 from ai_functions import (
     summarize_notes,
     simplify_notes,
-    generate_quiz
+    generate_quiz,
+    answer_question
 )
 
 # ---------------- SESSION STATE ----------------
@@ -47,6 +48,21 @@ if st.button("Simplify Notes"):
         simplified = simplify_notes(notes)
         st.subheader("Simplified Explanation")
         st.write(simplified)
+
+# AFTER notes are ready (after PDF + text input)
+
+st.subheader("Ask a Question")
+user_question = st.text_input("Ask anything about your notes")
+
+if st.button("Ask AI"):
+    if not user_question.strip():
+        st.warning("Please enter a question.")
+    elif not notes.strip():
+        st.warning("Please upload or enter notes first.")
+    else:
+        answer = answer_question(notes, user_question)
+        st.subheader("Answer")
+        st.write(answer)
 
 # ---------------- QUIZ ----------------
 difficulty = st.selectbox(

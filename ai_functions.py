@@ -1,13 +1,10 @@
 import streamlit as st
-import google.generativeai as genai
+from openai import OpenAI
 
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-model = genai.GenerativeModel(
-    "gemini-3.5-flash",
-    generation_config={"temperature": 0.7}
-)
 
+# ---------------- SUMMARY ----------------
 def summarize_notes(notes):
     prompt = f"""
     You are an expert tutor.
@@ -21,14 +18,15 @@ def summarize_notes(notes):
     {notes}
     """
 
-    response = model.generate_content(prompt)
+    response = client.responses.create(
+        model="gpt-4o-mini",
+        input=prompt
+    )
 
-    if response and response.text:
-        return response.text
-    else:
-        return "No response generated. Please try again."
+    return response.output_text
 
 
+# ---------------- SIMPLIFY ----------------
 def simplify_notes(notes):
     prompt = f"""
     Explain these notes in simple language suitable for beginners:
@@ -36,21 +34,25 @@ def simplify_notes(notes):
     {notes}
     """
 
-    response = model.generate_content(prompt)
-    return response.text
+    response = client.responses.create(
+        model="gpt-4o-mini",
+        input=prompt
+    )
+
+    return response.output_text
 
 
+# ---------------- QUIZ ----------------
 def generate_quiz(notes, difficulty):
     prompt = f"""
     Create 5 {difficulty} multiple choice questions.
 
     Return ONLY a JSON array.
 
-    Do not include:
-    - explanations
-    - markdown
-    - code fences
-    - ```json
+    Each question must include:
+    - question
+    - options (4 choices)
+    - answer
 
     Example:
 
@@ -71,5 +73,9 @@ def generate_quiz(notes, difficulty):
     {notes}
     """
 
-    response = model.generate_content(prompt)
-    return response.text
+    response = client.responses.create(
+        model="gpt-4o-mini",
+        input=prompt
+    )
+
+    return response.output_text

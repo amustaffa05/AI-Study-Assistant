@@ -18,7 +18,7 @@ st.title("SmartSem AI")
 notes = ""
 
 text_input = st.text_area("paste your notes here", height=200)
-uploaded_file = st.file_uploader("OR Upload your notes (PDF)", type="pdf")
+uploaded_file = st.file_uploader("OR upload your notes (PDF)", type="pdf")
 
 if text_input:
     notes = text_input

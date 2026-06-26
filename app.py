@@ -12,7 +12,7 @@ from ai_functions import (
 if "quiz" not in st.session_state:
     st.session_state.quiz = ""
 
-st.title("SmartSem AI")
+st.title("LUNA GEMOK")
 
 # ---------------- INPUT ----------------
 notes = ""
